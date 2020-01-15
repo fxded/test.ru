@@ -1,12 +1,17 @@
 var port = process.env.PORT || 3001;
 var socket = require('socket.io');
 var express = require('express');
+var fs = require('fs');
+
+
 var app = express();
 var io = socket.listen(app.listen(port));
-var oldName;
+
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', function(req,res){
 //    res.send('hello socket');
-    res.sendfile(__dirname + '/index.html');
+    res.sendfile('index.html');
 });
 
 io.sockets.on('connect', function(client){
