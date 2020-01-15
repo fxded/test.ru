@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Get Start</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <style>
+            li {
+                list-style-type: none;
+            }
+            .battons {
+                background-color: orange;
+            }
+            .battons .batton {
+                background-color: orangered;
+                margin: 0 15px 30px 15px;
+                float: left;
+                width: 150px;
+                height: 70px;
+            }
+            footer {
+                background-color: green;
+            }
+            h2 {
+                background-color: skyblue;
+            }
+            .clearfix {
+                clear: both;
+            }
+            nav.nav {
+                background-color: black;
+                position: fixed;
+                top: 0;
+                left: 1;
+                z-index: 9999;
+                margin: 1px;
+            }
+            .container {
+                position: static;
+                margin-top: 87px;
+                background-color: aqua;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav">
+            <a class="myHeaderLogo" href="index.html">
+                <img src="" alt="logo" width="100" height="100">
+            </a>
+            <ul class="site-nav">
+                <li>
+                    <a href="index.html">Concept Control</a>
+                </li>
+                <li>
+                    <a class="nav-site-current" href="#">About Us</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="container">
+            <h2>Что делает наш сервис</h2>
+            <p>Данный веб-сервис предназначен для вхождения в управление по полной функции. Для чего теоритические положения будут реализовываться
+            в программном коде.</p>
+            <ul class="battons" >
+                <li class="batton">Begin</li>
+                <li class="batton">View</li>
+                <li class="batton">Help</li>
+                <li class="batton">Schedule</li>
+            </ul>
+            <div class="clearfix"></div>
+        </main>
+        <footer>
+            <p>
+                Vasiliy Votintsev
+                <br>
+                Votintceff@gmail.com
+                <br>
+                <a class="avatar" href="#">
+                    <img src="img/avatar.png" alt="Vasiliy Votintsev" width="90" height="90">
+                </a>
+            </p>
+            <div>
+                <ul>
+                    <li>
+                        <a href="http://github.com/xded">
+                            <img src="img/github.png" alt="github">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://freecodecamp.com/xded">
+                            <img src="img/fccamp.png" alt="freecodecamp">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://sololearn.com/Profile/12376201#">
+                            <img src="img/sololearn.png" alt="sololearn">
+                        </a>
+                    </li>
+                </ul>
+                <a href="http://github.com/xded">Developed by Vasiliy Votintsev</a>
+            </div>
+            <p>
+                Supported by
+                <b>someone</b>
+                <a href="http://xded1.herokuapp.com">
+                    <span>Путь в тысячу миль начинаетcя с первого шага</span>
+                </a>
+            </p>
+        </footer>
+    </body>
+</html>

@@ -1,12 +1,58 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>
-			Welcome to
-		</title>
-	</head>
-	<body>
-		<h1>
-			Success! the server block is working
-		</h1>
-	</body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Get Start</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <style>
+            li {
+                list-style-type: none;
+            }
+            .clearfix {
+                clear: both;
+            }
+            .link {
+                text-decoration: none; 
+                color: hsl(240,100%,20%);
+            }
+       </style>
+    </head>
+    <body>
+        <nav class="nav">
+       </nav>
+        <main class="container">
+            <ul class="battons" >
+                <li id="Begin_batton" class="batton">Begin</li>
+                <li id="View_batton" class="batton">View</li>
+                <li id="Help_batton" class="batton">Help</li>
+                <li id="Sched_batton" class="batton">Schedule</li>
+            </ul>
+            <div class="clearfix"></div>
+        </main>
+        <footer class="footer">
+            <a class="link" href="http://github.com/xded">Developed by Vasiliy Votintsev</a>
+            <div class="support_text">
+                Supported by
+                <b>someone</b>
+                <a class="link" href="http://xded1.herokuapp.com">
+                    <span>Путь в тысячу миль начинаетcя с первого шага</span>
+                </a>
+            </div>
+        </footer>
+    </body>
+    <script type="text/javascript">
+        document.getElementById("Begin_batton").onclick = function() {
+            window.location.href = 'Begin.html';
+        }
+        document.getElementById("View_batton").onclick = function() {
+            window.location.href = 'View.html';
+        }
+        document.getElementById("Help_batton").onclick = function() {
+            window.location.href = 'View.html';
+        }
+        document.getElementById("Sched_batton").onclick = function() {
+            window.location.href = 'View.html';
+        }
+    </script>
 </html>

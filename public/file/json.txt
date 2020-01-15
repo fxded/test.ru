@@ -1,0 +1,32 @@
+version 1
+var task = {
+    id_task: {
+        task: {
+            number:     int,
+            soderzh:    string,
+            percent:    float,
+            time:       time,
+            result:     string,
+            decomp:     boolean,
+            podtask:    {
+                ....
+            }
+        }
+    }
+}
+
+version 1.1
+var task = {
+    id_task: int,
+    task: {
+            number:     int,
+            soderzh:    string,
+            percent:    float,
+            time:       time,
+            result:     string,
+            decomp:     boolean,
+            podtask:    {
+                ....
+            }
+    }
+    }

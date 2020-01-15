@@ -1,0 +1,209 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>Begin</title>
+<!--    <link rel="stylesheet" type="text/css" href="css/main3.css">-->
+    <meta content="">
+    <meta charset="utf-8">
+    <style>
+    </style>
+  </head>
+  <body id="idBody">
+      <form action="okFunc()" method="post">
+          <label for="numTask">№ п/п</label>
+          <input id="numTask" type="text" name="enter_num" required tabindex="1">
+          <br><label for="txtTask">содержание задачи</label>
+          <input id="txtTask" type="text" name="enter_task" required tabindex="2">
+          <br><label for="percentTask">в % от всей задачи</label>
+          <input id="percentTask" type="number" name="enter_perc" required tabindex="3">
+          <br><label for="timeTask">время выполнения</label>
+          <input id="timeTask" type="text" name="enter_time" required tabindex="4">
+          <br><label for="resultTask">ожидаемый результат</label>
+          <input id="resultTask" type="text" name="enter_result" required tabindex="5">
+          <br><label for="flagTask">детализация</label>
+          <input id="flagTask" type="checkbox" name="enter_num" tabindex="6">
+          <input type="button" value="принять" onclick="okFunc()" tabindex="7">
+      </form>
+      <table id="tab1" class="task_table" border="1">
+          <thead>
+              <tr>
+                  <th>№ п/п</th>
+                  <th>содержание задачи</th>
+                  <th>в % от всей задачи</th>
+                  <th>время выполнения</th>
+                  <th>ожидаемый результат</th>
+                  <th>удалить</th>
+                  <th>редактировать</th>
+              </tr>
+          </thead>
+          <tbody id="tBodyId">
+          </tbody>
+      </table>
+      <input type="button" value="Сохранить и отправить" onclick="safeAndSend()" tabindex="8">
+      <input type="button" value="Сохранить черновик" onclick="safeDraftCopy()" tabindex="9">
+  </body>
+  <script type="text/javascript">
+      
+      function isNotEmpty(task) {
+          if (task == "") return false;
+          return true;
+      }
+      
+      function delRow (idRow) {
+          // получает ид кнопки, ищет индекс строки и удаляет ее
+          var index1 = idRow.parentNode.parentNode.rowIndex;
+          document.getElementById("tab1").deleteRow(index1);
+      }
+      
+      function editRow (idRow) {
+          // получает ид кнопки, ищет индекс строки удаляет ее из
+          // таблицы и возвращает в форму ввода
+          var index1 = idRow.parentNode.parentNode.rowIndex;
+          var numTask = document.getElementById("tBodyId").rows[index1-1].cells[0].innerHTML;
+          var task = document.getElementById("tBodyId").rows[index1-1].cells[1].innerHTML;
+          var percTask = document.getElementById("tBodyId").rows[index1-1].cells[2].innerHTML;
+          var timeTask = document.getElementById("tBodyId").rows[index1-1].cells[3].innerHTML;
+          var resultTask = document.getElementById("tBodyId").rows[index1-1].cells[4].innerHTML;
+          document.getElementById("tab1").deleteRow(index1);
+          // запись значений в поля формы
+          var fieldNum = document.getElementById("numTask");
+          var fieldTask = document.getElementById("txtTask");
+          var fieldPerc = document.getElementById("percentTask");
+          var fieldTime = document.getElementById("timeTask");
+          var fieldResult = document.getElementById("resultTask");
+          var fieldFlag = document.getElementById("flagTask");
+          fieldNum.value = numTask;
+          fieldTask.value = task;
+          fieldPerc.value = percTask;
+          fieldTime.value = timeTask;
+          fieldResult.value = resultTask;
+          // fieldFlag.value = percTask;
+          //console.log(index1,task,numTask,percTask,timeTask,resultTask);
+      }
+
+      function moveUP (idRow) {
+          // получает ид кнопки, ищет индекс строки перемещает ее на
+          // одну позицию вверх в таблице
+          var index1 = idRow.parentNode.parentNode.rowIndex;
+          var tr1,tr2;
+          //alert (index1);
+          if (index1 == 1) {
+              alert("Куда выше то?");
+              return;
+          }
+          if (!(tr1 = document.getElementsByTagName('tr')[index1-1])||(!(tr2 = document.getElementsByTagName('tr')[index1])))
+              return;
+          tr2.parentNode.insertBefore(tr2, tr1);
+      }
+
+      function moveDown (idRow) {
+          // получает ид кнопки, ищет индекс строки перемещает ее на
+          // одну позицию вниз в таблице
+          var index1 = idRow.parentNode.parentNode.rowIndex;
+          var tr1,tr2;
+          if (!(tr1 = document.getElementsByTagName('tr')[index1+1])||(!(tr2 = document.getElementsByTagName('tr')[index1])))
+              return;
+          tr2.parentNode.insertBefore(tr1, tr2);
+      }
+      
+      function safeAndSend () {
+          // получает стуктурированую информацию
+          // и сохраняет в файл на яндекс диск
+          console.log(getInfo());
+          return;
+      }
+
+      function safeDraftCopy () {
+          // получает стуктурированую информацию
+          // и сохраняет в файл на яндекс диск с пометкой черновик
+          //var draft = getInfo(123);
+          //draft.draftFlag = 123;
+          console.log(getInfo(true));
+          return;
+      }
+      
+      function getInfo (flag=false) {
+          // добывает информацию из таблицы, стуктурирует 
+          // и возвращает JSON объект
+          var structTask = {};
+          structTask.draftFlag = flag;
+          var tabWithInfo = document.getElementById("tBodyId");
+          var temp = tabWithInfo.rows.length;
+          for (var i = 0; i < tabWithInfo.rows.length; i++) {
+              structTask[i] = {};
+              structTask[i]["number"] = tabWithInfo.rows[i].cells[0].innerHTML;
+              structTask[i]["soderzh"] = tabWithInfo.rows[i].cells[1].innerHTML;
+              structTask[i]["pecent"] = tabWithInfo.rows[i].cells[2].innerHTML;
+              structTask[i]["time"] = tabWithInfo.rows[i].cells[3].innerHTML;
+              structTask[i]["result"] = tabWithInfo.rows[i].cells[4].innerHTML;
+              //console.log(structTask[i].task);
+          }
+          return JSON.stringify(structTask);
+      }
+      
+      function okFunc () {
+          var numTask = document.getElementById("numTask").value;
+          var task = document.getElementById("txtTask").value;
+          var percTask = document.getElementById("percentTask").value;
+          var timeTask = document.getElementById("timeTask").value;
+          var resultTask = document.getElementById("resultTask").value;
+          var flagTask = document.getElementById("flagTask").value;
+          // находим нужную таблицу
+          var tab1 = document.getElementById("tab1").getElementsByTagName("TBODY")[0];
+          if (isNotEmpty(task)) {
+              // создаем новую строку и добавляем ее
+              var newRow = document.createElement("TR");
+              tab1.appendChild(newRow);
+              // создаем ячейки в этой строке
+              var tdNumTask = document.createElement("TD");
+              var tdTask = document.createElement("TD");
+              var tdPercTask = document.createElement("TD");
+              var tdTimeTask = document.createElement("TD");
+              var tdResTask = document.createElement("TD");
+              var tdDelTask = document.createElement("TD");
+              var tdEditTask = document.createElement("TD");
+              //var tdMoveUpTask = document.createElement("TD");
+              //var tdMoveDownTask = document.createElement("TD");
+              newRow.appendChild(tdNumTask);
+              newRow.appendChild(tdTask);
+              newRow.appendChild(tdPercTask);
+              newRow.appendChild(tdTimeTask);
+              newRow.appendChild(tdResTask);
+              newRow.appendChild(tdDelTask);
+              newRow.appendChild(tdEditTask);
+              // наполняем их
+              tdNumTask.innerHTML = numTask;
+              tdTask.innerHTML = task;
+              tdPercTask.innerHTML = percTask;
+              tdTimeTask.innerHTML = timeTask;
+              tdResTask.innerHTML = resultTask;
+              // вставляем кнопки
+              // кнопка удаления
+              var tdDelBtn = document.createElement("INPUT");
+              tdDelBtn.type = "button";
+              tdDelBtn.value = " Delete ";
+              tdDelBtn.setAttribute("onclick", "delRow(this)");
+              tdDelTask.appendChild(tdDelBtn);
+              // кнопка редактирования
+              var tdEditBtn = document.createElement("INPUT");
+              tdEditBtn.type = "button";
+              tdEditBtn.value = "Edit";
+              tdEditBtn.setAttribute("onclick", "editRow(this)");
+              tdEditTask.appendChild(tdEditBtn);
+              // кнопка перемещения вверх
+              var tdMoveUpTaskBtn = document.createElement("INPUT");
+              tdMoveUpTaskBtn.type = "button";
+              tdMoveUpTaskBtn.value = "Up";
+              tdMoveUpTaskBtn.setAttribute("onclick", "moveUP(this)");
+              tdEditTask.appendChild(tdMoveUpTaskBtn);
+              // кнопка перемещения вниз
+              var tdMoveDownTaskBtn = document.createElement("INPUT");
+              tdMoveDownTaskBtn.type = "button";
+              tdMoveDownTaskBtn.value = "Down";
+              tdMoveDownTaskBtn.setAttribute("onclick", "moveDown(this)");
+              tdEditTask.appendChild(tdMoveDownTaskBtn);
+          } else alert("Ничего не введено!");
+          return;
+      }
+  </script>    
+</html>

@@ -1,0 +1,62 @@
+            body {
+                color: blue;
+                background: hsl(240,100%,5%);
+            }
+            .batton {
+                float: left;
+                width:100px;
+                height:25px;
+                padding:25px;
+                margin:50px;
+                border-color:hsl(170,100%,75%);
+                color:hsl(170,100%,60%);
+                text-align:center;
+                text-shadow:0px 0px 14px hsl(170,100%,50%);
+                border-width:1px;
+                border-style:solid;
+                border-radius:20px;
+                background-color:transparent;
+                box-shadow: 0px 0px 40px -10px hsl(170,100%,50%),
+                            inset 0px 0px 40px -10px hsl(170,100%,50%);
+                animation-name:look;
+                animation-duration:10s;
+                animation-iteration-count: infinite;
+                animation-timing-function:linear;
+            }
+            @keyframes look {
+                0% {
+                    border-color:hsl(170,100%,75%);
+                    color:hsl(170,100%,60%);                
+                    box-shadow: 0px 0px 40px -10px hsl(170,100%,70%),
+                    inset 0px 0px 40px -10px hsl(170,100%,50%);
+                }
+                25% {
+                    border-color:hsl(210,100%,75%);
+                    color:hsl(210,100%,60%);                
+                    box-shadow: 0px 0px 40px -10px hsl(210,100%,75%), 
+                    inset 0px 0px 40px -10px hsl(210,100%,50%);
+                }
+                50% {
+                    border-color:hsl(250,100%,75%);
+                    color:hsl(250,100%,60%);
+                    box-shadow: 0px 0px 40px -10px hsl(250,100%,70%),
+                    inset 0px 0px 40px -10px hsl(250,100%,50%);
+                }
+                75% {
+                    border-color:hsl(210,100%,75%);
+                    color:hsl(210,100%,60%);                
+                    box-shadow: 0px 0px 40px -10px hsl(210,100%,75%),
+                    inset 0px 0px 40px -10px hsl(210,100%,50%);
+                }
+            }
+            .batton:hover {
+                transform:scale(0.990);
+            }            
+            footer {
+                position: fixed;
+                bottom: 0;
+                left: 1;
+                z-index: -10;
+                margin: 0px;
+                color: hsl(240,100%,20%);
+            }
