@@ -1,7 +1,8 @@
+var port = process.env.PORT || 3001;
 var socket = require('socket.io');
 var express = require('express');
 var app = express();
-var io = socket.listen(app.listen(3001));
+var io = socket.listen(app.listen(port));
 var oldName;
 app.get('/', function(req,res){
 //    res.send('hello socket');
