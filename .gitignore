@@ -2,7 +2,7 @@
 node_modules/
 
 # Ignore user data
-data/
+#data/
 
 # Ignore Logs
 logs
