@@ -38,7 +38,8 @@ function insertData(data){
 }
 
 function myConnect(){
-    var socket = io.connect('http://www.test.ru:3001');
+    //var socket = io.connect('http://www.test.ru:3001');
+    var socket = io();
     return socket;
 }
 
