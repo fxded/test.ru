@@ -39,8 +39,10 @@
           <tbody id="tBodyId">
           </tbody>
       </table>
-      <input type="button" value="Сохранить и отправить" onclick="safeAndSend()" tabindex="8">
-      <input type="button" value="Сохранить черновик" onclick="safeDraftCopy()" tabindex="9">
+      <input type="button" value="Сохранить и отправить" onclick="safeAndSend(false)" tabindex="8">
+      <input type="button" value="Сохранить черновик" onclick="safeAndSend(true)" tabindex="9">
+      <input type="button" value="Загрузить оригинал" onclick="loadInfo(false)" tabindex="10">
+      <input type="button" value="Загрузить черновик" onclick="loadInfo(true)" tabindex="10">
   </body>
   <script src="http://test.ru:3001/socket.io/socket.io.js"></script>    
   <script src="js/begin.js"></script>

@@ -1,15 +1,57 @@
 "use strict";
 
-var socket = io.connect('http://www.test.ru:3001');
+function loadInfo(flag){
+    var socket = myConnect();
+    getUserData(socket, flag);
+    return;    
+}
 
-window.onunload = () => {
+function getUserData(socket, flag){
+    // проверяет статус файла и если он есть 
+    // то запрашивает инфу а на сервере он удаляется
+    // а инфу передает на вставку
+    // flag =  true черновик иначе оригинал
+    socket.emit('getFileStatus', flag);
+    socket.on('pushFileStatus', (fileStatus) =>{
+        console.log('___________fileStatus______________');
+        console.log(fileStatus);
+        if (!fileStatus || fileStatus.errno == 0){
+            socket.emit('getUserData', flag);
+            socket.on('pushUserData', (data) => {
+                insertData(data);
+                myDisconnect(socket);
+            });
+        } else {
+            alert('file not found');
+        }
+    });
+}
+
+function insertData(data){
+// вставка инфы в таблицу
+    var uData = JSON.parse(data);
+    for (var key in uData){
+        if (key != "draftFlag") {
+            insertToTable(uData[key]['number'], uData[key]['soderzh'], uData[key]['percent'], uData[key]['time'], uData[key]['result'], false);
+        }
+    }
+}
+
+function myConnect(){
+    var socket = io.connect('http://www.test.ru:3001');
+    return socket;
+}
+
+function myDisconnect(socket){
     socket.disconnect();
 };
 
-socket.on('log', (data) => {
+function getLog (socket){
+    socket.on('log', (data) => {
         alert(data.hello);
+        myDisconnect(socket);
     });
-
+};
       
 function isNotEmpty(task) {
     if (task === "") {
@@ -76,29 +118,20 @@ function moveDown(idRow) {
     tr2.parentNode.insertBefore(tr1, tr2);
 };
 
-function safeAndSend() {
+function safeAndSend(draft) {
     // получает стуктурированую информацию
     // и сохраняет в файл на яндекс диск
-    var data = getInfo();
-    //console.log(data);
+    var data = getInfo(draft),
+        socket = myConnect();
     socket.emit('userData', data);
-    return;
-};
-
-function safeDraftCopy() {
-    // получает стуктурированую информацию
-    // и сохраняет в файл на яндекс диск с пометкой черновик
-    var data = getInfo(true);
-    //console.log(data);
-    socket.emit('userData', data);
+    getLog(socket);
     return;
 };
 
 function getInfo(flag) {
     // добывает информацию из таблицы, стуктурирует 
     // и возвращает JSON объект
-    var structTask = {},
-        flag = flag || false;
+    var structTask = {};
     structTask.draftFlag = flag;
     var tabWithInfo = document.getElementById("tBodyId"),
         temp = tabWithInfo.rows.length;
@@ -106,7 +139,7 @@ function getInfo(flag) {
         structTask[i] = {};
         structTask[i]["number"] = tabWithInfo.rows[i].cells[0].innerHTML;
         structTask[i]["soderzh"] = tabWithInfo.rows[i].cells[1].innerHTML;
-        structTask[i]["pecent"] = tabWithInfo.rows[i].cells[2].innerHTML;
+        structTask[i]["percent"] = tabWithInfo.rows[i].cells[2].innerHTML;
         structTask[i]["time"] = tabWithInfo.rows[i].cells[3].innerHTML;
         structTask[i]["result"] = tabWithInfo.rows[i].cells[4].innerHTML;
         //console.log(structTask[i].task);
@@ -121,6 +154,13 @@ function okFunc() {
     var timeTask = document.getElementById("timeTask").value;
     var resultTask = document.getElementById("resultTask").value;
     var flagTask = document.getElementById("flagTask").value;
+    // вставляем значения в таблицу
+    insertToTable(numTask, task, percTask, timeTask, resultTask, flagTask);
+    return;
+};
+
+function insertToTable(numTask, task, percTask, timeTask, resultTask, flagTask){
+    // вставляет строчку в таблицу
     // находим нужную таблицу
     var tab1 = document.getElementById("tab1").getElementsByTagName("TBODY")[0];
     if (isNotEmpty(task)) {
@@ -135,8 +175,6 @@ function okFunc() {
         var tdResTask = document.createElement("TD");
         var tdDelTask = document.createElement("TD");
         var tdEditTask = document.createElement("TD");
-        //var tdMoveUpTask = document.createElement("TD");
-        //var tdMoveDownTask = document.createElement("TD");
         newRow.appendChild(tdNumTask);
         newRow.appendChild(tdTask);
         newRow.appendChild(tdPercTask);
@@ -176,6 +214,5 @@ function okFunc() {
         tdMoveDownTaskBtn.setAttribute("onclick", "moveDown(this)");
         tdEditTask.appendChild(tdMoveDownTaskBtn);
     } else alert("Ничего не введено!");
-    return;
-};
+}
 
